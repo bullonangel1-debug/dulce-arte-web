@@ -30,3 +30,15 @@ test('el cierre de caja rechaza métodos de pago no válidos', () => {
   const ventas = [{ metodoPago: 'cheque', items: [{ producto: 'Torta', cantidad: 1, precio: 65 }] }];
   assert.throws(() => cierreDeCaja(ventas));
 });
+
+
+test('el total del cierre de caja incluye los pagos con Yape', () => {
+  const ventas = [
+    { metodoPago: 'efectivo', items: [{ producto: 'Empanada', cantidad: 5, precio: 6 }] },
+    { metodoPago: 'tarjeta', items: [{ producto: 'Torta', cantidad: 1, precio: 65 }] },
+    { metodoPago: 'yape', items: [{ producto: 'Turrón', cantidad: 1, precio: 25 }] },
+  ];
+  const cierre = cierreDeCaja(ventas);
+  assert.equal(cierre.yape, 25);
+  assert.equal(cierre.total, 120);
+});
