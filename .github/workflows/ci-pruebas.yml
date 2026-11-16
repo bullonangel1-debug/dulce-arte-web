@@ -1,0 +1,23 @@
+name: CI 1 - Pruebas unitarias
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  pruebas:
+    name: Ejecutar pruebas de los modulos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v5
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Ejecutar pruebas de catalogo, inventario y ventas
+        run: npm test
