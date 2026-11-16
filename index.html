@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dulce Arte | Sistema de pedidos e inventario</title>
+  <meta name="description" content="Prototipo del sistema web de pedidos e inventario de Panadería y Pastelería Dulce Arte S.A.C.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;family=Source+Sans+3:wght@400;600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="cabecera">
+    <div class="marca">
+      <span class="marca-sello" aria-hidden="true">DA</span>
+      <div>
+        <h1>Dulce Arte</h1>
+        <p>Panadería y Pastelería · Sistema de pedidos e inventario</p>
+      </div>
+    </div>
+    <nav class="pestanas" aria-label="Módulos del sistema">
+      <button class="pestana activa" type="button" data-modulo="catalogo">Catálogo</button>
+      <button class="pestana" type="button" data-modulo="inventario">Inventario</button>
+      <button class="pestana" type="button" data-modulo="ventas">Ventas</button>
+      <button class="pestana" type="button" data-modulo="reservas" id="pestana-reservas" hidden>Tortas temáticas</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="modulo activo" id="modulo-catalogo" aria-labelledby="titulo-catalogo">
+      <div class="modulo-cabecera">
+        <h2 id="titulo-catalogo">Catálogo de productos</h2>
+        <div class="filtros">
+          <label for="buscar">Buscar</label>
+          <input id="buscar" type="search" placeholder="Ej. turrón, croissant">
+          <label for="categoria">Categoría</label>
+          <select id="categoria"></select>
+        </div>
+      </div>
+      <div class="tarjetas" id="lista-productos"></div>
+      <p class="vacio" id="sin-resultados" hidden>No se encontraron productos con ese criterio.</p>
+    </section>
+
+    <section class="modulo" id="modulo-inventario" aria-labelledby="titulo-inventario">
+      <div class="modulo-cabecera">
+        <h2 id="titulo-inventario">Inventario de insumos</h2>
+        <p class="nota">Alertas de stock mínimo y de vencimiento (próximos 7 días).</p>
+      </div>
+      <div class="indicadores" id="indicadores-inventario"></div>
+      <div class="tabla-contenedor">
+        <table>
+          <thead>
+            <tr><th>Insumo</th><th>Stock</th><th>Mínimo</th><th>A reponer</th><th>Vencimiento</th></tr>
+          </thead>
+          <tbody id="tabla-insumos"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="modulo" id="modulo-ventas" aria-labelledby="titulo-ventas">
+      <div class="modulo-cabecera">
+        <h2 id="titulo-ventas">Ventas del día y cierre de caja</h2>
+        <p class="nota">Datos de demostración de una jornada de atención.</p>
+      </div>
+      <div class="ventas-grid">
+        <div class="tabla-contenedor">
+          <table>
+            <thead>
+              <tr><th>Venta</th><th>Hora</th><th>Detalle</th><th>Pago</th><th>Subtotal</th></tr>
+            </thead>
+            <tbody id="tabla-ventas"></tbody>
+          </table>
+        </div>
+        <aside class="cierre" aria-labelledby="titulo-cierre">
+          <h3 id="titulo-cierre">Cierre de caja</h3>
+          <dl id="resumen-cierre"></dl>
+          <p class="cuadre" id="estado-cuadre"></p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="modulo" id="modulo-reservas" aria-labelledby="titulo-reservas">
+      <div class="modulo-cabecera">
+        <h2 id="titulo-reservas">Reserva de tortas temáticas</h2>
+        <p class="nota">Funcionalidad liberada mediante el feature flag <code>reservaTortasTematicas</code>.</p>
+      </div>
+      <form class="formulario" id="form-reserva">
+        <label for="tematica">Temática</label>
+        <input id="tematica" type="text" placeholder="Ej. Unicornio, fútbol, Frozen" required>
+        <label for="porciones">Porciones (10 a 100)</label>
+        <input id="porciones" type="number" min="10" max="100" value="20" required>
+        <label for="decoracion">Decoración</label>
+        <select id="decoracion">
+          <option value="simple">Simple</option>
+          <option value="media" selected>Media (+ S/ 30.00)</option>
+          <option value="alta">Alta (+ S/ 60.00)</option>
+        </select>
+        <button type="submit">Cotizar</button>
+        <p class="resultado" id="resultado-reserva" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <p>Prototipo académico con datos ficticios · Desplegado automáticamente con GitHub Actions en GitHub Pages</p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
