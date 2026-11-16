@@ -1,0 +1,30 @@
+name: CI 2 - Calidad del codigo
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  calidad:
+    name: Revisar sintaxis y HTML
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v5
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Revisar la sintaxis de los archivos JavaScript
+        run: |
+          for archivo in $(find . -name "*.js" -not -path "./node_modules/*"); do
+            echo "Revisando $archivo"
+            node --check "$archivo"
+          done
+
+      - name: Revisar el HTML con HTMLHint
+        run: npx --yes htmlhint@1.9.2 index.html

@@ -1,0 +1,23 @@
+name: CI 3 - Estructura y configuracion
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  configuracion:
+    name: Validar estructura, feature flags y catalogo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v5
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Validar estructura y configuracion del proyecto
+        run: npm run validar
