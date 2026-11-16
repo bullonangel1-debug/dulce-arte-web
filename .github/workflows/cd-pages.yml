@@ -1,0 +1,66 @@
+name: CD - Despliegue en GitHub Pages
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  verificar:
+    name: Verificar antes de desplegar
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v5
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Ejecutar pruebas
+        run: npm test
+
+      - name: Validar estructura y configuracion
+        run: npm run validar
+
+  construir:
+    name: Preparar el sitio
+    needs: verificar
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v5
+
+      - name: Copiar solo los archivos del sitio a la carpeta dist
+        run: |
+          mkdir dist
+          cp -r index.html styles.css app.js catalogo inventario ventas config dist/
+          find dist -name "README.md" -delete
+          ls -R dist
+
+      - name: Empaquetar el sitio para GitHub Pages
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  desplegar:
+    name: Publicar en GitHub Pages
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - name: Desplegar el sitio
+        id: despliegue
+        uses: actions/deploy-pages@v4
