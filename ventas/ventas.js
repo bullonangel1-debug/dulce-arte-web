@@ -25,7 +25,7 @@ export function cierreDeCaja(ventas) {
     efectivo: redondear(resumen.efectivo),
     tarjeta: redondear(resumen.tarjeta),
     yape: redondear(resumen.yape),
-    total: redondear(resumen.efectivo + resumen.tarjeta),
+    total: redondear(resumen.efectivo + resumen.tarjeta + resumen.yape),
     cantidadVentas: ventas.length,
   };
 }
